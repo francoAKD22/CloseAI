@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CloseAI</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #94a3b8;
+    }
+
+    textarea {
+      width: 80%;
+      height: 120px;
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn1 { background: #22c55e; }
+    .btn2 { background: #3b82f6; }
+    .btn3 { background: #f59e0b; }
+
+    pre {
+      margin-top: 20px;
+      background: #020617;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>CloseAI</h1>
+<p>Convierte mensajes en clientes automáticamente</p>
+
+<textarea id="input" placeholder="Ej: Necesito un logo para mi marca"></textarea>
+
+<br>
+
+<button class="btn1" onclick="generar('propuesta')">Generar Propuesta</button>
+<button class="btn2" onclick="generar('respuesta')">Responder Cliente</button>
+<button class="btn3" onclick="generar('precio')">Sugerir Precio</button>
+
+<pre id="output"></pre>
+<p id="loading" style="display:none;">Generando respuesta...</p>
+<script>
+async function generar(tipo) {
+  const input = document.getElementById("input").value;
+
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("output").innerText = "";
+
+  const res = await fetch(`http://127.0.0.1:5000/${tipo}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ input })
+  });
+
+  const data = await res.json();
+
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("output").innerText = data.respuesta;
+}
+</script>
+</script>
+
+</body>
+</html>
